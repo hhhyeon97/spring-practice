@@ -4,7 +4,6 @@ import com.sparta.spring.dto.MemoRequestDto;
 import com.sparta.spring.dto.MemoResponseDto;
 import com.sparta.spring.entity.Memo;
 import com.sparta.spring.repository.MemoRepository;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,10 +13,9 @@ public class MemoService {
 
     private final MemoRepository memoRepository;
 
-    public MemoService(JdbcTemplate jdbcTemplate) {
-        this.memoRepository = new MemoRepository(jdbcTemplate);
+    public MemoService(MemoRepository memoRepository) {
+        this.memoRepository = memoRepository;
     }
-
 
     // 연결된 컨틀롤러의 메서드의 반환타입으로 자동으로 지정된다.
     public MemoResponseDto createMemo(MemoRequestDto requestDto) {

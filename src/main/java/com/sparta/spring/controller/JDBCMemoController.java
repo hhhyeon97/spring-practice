@@ -4,7 +4,6 @@ package com.sparta.spring.controller;
 import com.sparta.spring.dto.MemoRequestDto;
 import com.sparta.spring.dto.MemoResponseDto;
 import com.sparta.spring.service.MemoService;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,11 +11,18 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
     public class JDBCMemoController {
+    // 현재 제어의 흐름 ( 강한 결합된 상태 )
+    // JDBCMemoController > MemoService > MemoRepository
+
+    // 강한 결합을 해결해 보자 ! 
+    // 1. 각 객체에 대한 객체 생성은 딱 한 번만
+    // 2. 생성된 객체를 모든 곳에서 재사용
+    // 3. 생성자 주입을 사용하여 필요로 하는 객체에 해당 객체 주입하기
 
     private final MemoService memoService;
 
-    public JDBCMemoController(JdbcTemplate jdbcTemplate) {
-        this.memoService = new MemoService(jdbcTemplate);
+    public JDBCMemoController(MemoService memoService) {
+        this.memoService = memoService;
     }
 
     @PostMapping("/memos")
