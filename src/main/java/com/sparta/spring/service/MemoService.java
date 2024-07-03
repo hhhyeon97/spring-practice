@@ -12,38 +12,30 @@ import java.util.List;
 @Service
 public class MemoService {
 
-    private final JdbcTemplate jdbcTemplate;
+    private final MemoRepository memoRepository;
 
     public MemoService(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+        this.memoRepository = new MemoRepository(jdbcTemplate);
     }
 
 
     // 연결된 컨틀롤러의 메서드의 반환타입으로 자동으로 지정된다.
     public MemoResponseDto createMemo(MemoRequestDto requestDto) {
-
-
         // RequestDto -> Entity
         Memo memo = new Memo(requestDto);
-
         // DB 저장
-        MemoRepository memoRepository = new MemoRepository(jdbcTemplate);
         Memo saveMemo = memoRepository.save(memo);
-
         // Entity -> ResponseDto
         MemoResponseDto memoResponseDto = new MemoResponseDto(memo);
-
         return memoResponseDto;
     }
 
     public List<MemoResponseDto> getMemos() {
         // DB 조회
-        MemoRepository memoRepository = new MemoRepository(jdbcTemplate);
         return memoRepository.findAll();
     }
 
     public Long updateMemo(Long id, MemoRequestDto requestDto) {
-        MemoRepository memoRepository = new MemoRepository(jdbcTemplate);
 
         // 해당 메모가 DB에 존재하는지 확인
         Memo memo = memoRepository.findById(id);
@@ -57,7 +49,6 @@ public class MemoService {
     }
 
     public Long deleteMemo(Long id) {
-        MemoRepository memoRepository = new MemoRepository(jdbcTemplate);
         // 해당 메모가 DB에 존재하는지 확인
         Memo memo = memoRepository.findById(id);
         if (memo != null) {
