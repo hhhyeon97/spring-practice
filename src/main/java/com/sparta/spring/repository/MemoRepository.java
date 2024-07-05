@@ -3,12 +3,14 @@ package com.sparta.spring.repository;
 import com.sparta.spring.dto.MemoRequestDto;
 import com.sparta.spring.dto.MemoResponseDto;
 import com.sparta.spring.entity.Memo;
+import jakarta.persistence.EntityManager;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -91,5 +93,16 @@ public class MemoRepository { // memoRepository
         }, id);
     }
 
+
+
+    @Transactional
+    public Memo createMemo(EntityManager em) {
+        Memo memo = em.find(Memo.class, 1);
+        memo.setUsername("로버트");
+        memo.setContents("@Transactional 전파 테스트 중! 2");
+
+        System.out.println("createMemo 메서드 종료");
+        return memo;
+    }
 
 }
