@@ -1,14 +1,9 @@
 package com.sparta.spring.service;
 
-import com.sparta.spring.Application;
 import com.sparta.spring.dto.MemoRequestDto;
 import com.sparta.spring.dto.MemoResponseDto;
 import com.sparta.spring.entity.Memo;
 import com.sparta.spring.repository.MemoRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -74,7 +69,8 @@ public class MemoService { // memoService
 
     public List<MemoResponseDto> getMemos() {
         // DB 조회                                   // 여기 다시 이해 필요
-        return memoRepository.findAll().stream().map(MemoResponseDto::new).toList();
+        //return memoRepository.findAll().stream().map(MemoResponseDto::new).toList();
+        return memoRepository.findAllByOrderByModifiedAtDesc().stream().map(MemoResponseDto::new).toList();
     }
 
     @Transactional // 변경감지
